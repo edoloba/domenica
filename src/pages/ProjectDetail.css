@@ -1,0 +1,453 @@
+/* ── Base ──────────────────────────────────────────────────────────────────── */
+
+.detail-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  /* text-transform: uppercase; */
+  color: #000;
+  background: #fff;
+}
+
+/* ── Left column (sticky) ──────────────────────────────────────────────────── */
+
+.detail-left {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  border-right: 1.5px solid #000;
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* detail-left-top always fills the aside */
+.detail-left-top {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Description wrapper — natural height */
+.detail-left-scroll {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Bottom row: meta + next project on same baseline */
+.detail-bottom-row {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 60px;
+}
+
+/* ── Nav label ─────────────────────────────────────────────────────────────── */
+
+.detail-nav-label {
+  display: block;
+  position: relative;
+  z-index: 51;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #000;
+  text-decoration: none;
+  cursor: default;
+  user-select: none;
+}
+
+.detail-nav-bottom {
+  margin-top: 12px;
+}
+
+.detail-title {
+  margin-top: 56px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  user-select: text;
+}
+
+.detail-description {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: pre-line;
+  user-select: text;
+  max-width: 80%;
+}
+
+.external-link {
+  margin-top: 40px;
+}
+
+.detail-external-link {
+  color: #000;
+  text-decoration: none;
+}
+
+.detail-external-link:hover {
+  text-decoration: underline;
+}
+
+/* Spacer — takes all free space when no video */
+.detail-spacer {
+  flex: 1;
+}
+
+/* Smaller spacer when video is also present (shares space with .detail-video) */
+.detail-spacer-sm {
+  flex: 1;
+}
+
+/* Left side of bottom row: meta stacked above previous-project link */
+.detail-bottom-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+/* Year + services, right-aligned */
+.detail-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  padding-bottom: 80px;
+}
+
+.detail-meta-edition {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1.5px solid #000;
+}
+
+.detail-separator {
+  border: none;
+  border-top: 1.5px solid #000;
+  margin: 10px 0;
+}
+
+.detail-next {
+  display: block;
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.detail-next:hover {
+  opacity: 0.5;
+}
+
+/* Editions list */
+.editions-list {
+  list-style: none;
+  border-top: 1.5px solid #000;
+  margin-top: 10px;
+  width: 15%;
+}
+
+.editions-list li {
+  border-bottom: 1.5px solid #000;
+}
+
+.edition-link {
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  color: #000;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-family: inherit;
+  transition: transform 0.3s ease;
+}
+
+.edition-link:hover {
+  transform: translateX(10px);
+}
+
+/* Video — fills remaining space between next-project and WORK */
+.detail-video {
+  flex: 1;
+  min-height: 0;
+  margin-top: 12px;
+}
+
+.video-iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+  background: #f0f0f0;
+}
+
+/* ── Right column (scrolls) ────────────────────────────────────────────────── */
+
+.detail-right {
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.gallery-img {
+  width: 100%;
+  display: block;
+}
+
+.archive-label {
+  position: fixed;
+  bottom: 36px;
+  right: 40px;
+  user-select: none;
+}
+
+/* ── Gallery layouts ───────────────────────────────────────────────────────── */
+
+.gallery-img-natural,
+.gallery-img-magazine,
+.gallery-img-cover,
+.gallery-book-full {
+  cursor: zoom-in;
+}
+
+/* default: ogni immagine centrata a grandezza naturale nel suo 100vh */
+.gallery-default {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 80px;
+  padding: 0 0 80px;
+}
+
+.gallery-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-img-natural {
+  width: calc(100% - 80px);
+  height: calc(100vh - 160px);
+  object-fit: contain;
+  display: block;
+}
+
+/* magazine: come default (stack singola colonna), ma contenuta senza scroll */
+.gallery-magazine {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 80px;
+  padding: 0 0 80px;
+}
+
+.gallery-img-magazine {
+  max-width: calc(100% - 80px);
+  max-height: calc(100vh - 160px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.gallery-img-cover {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* book: prime due affiancate, resto in colonna */
+.gallery-book {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 4px;
+}
+
+.gallery-book-spread {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  width: 100%;
+}
+
+.gallery-book-full {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ── Mobile ────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 425px) {
+  .detail-page {
+    grid-template-columns: 1fr;
+  }
+
+  /* Left column: static, auto height */
+  .detail-left {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1.5px solid #000;
+    padding: 20px 24px;
+  }
+
+  .detail-spacer,
+  .detail-spacer-sm {
+    display: none;
+  }
+
+  .detail-meta {
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0 12px;
+    margin-top: 12px;
+  }
+
+  .detail-description {
+    margin-top: 16px;
+  }
+
+  /* Right column: fixed height container, scrolls horizontally */
+  .detail-right {
+    display: block;
+    height: 100vh;
+    min-height: unset;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Scroll arrow hint — hidden when edition cover (single media, no scroll) */
+  .detail-right--edition::after {
+    display: none;
+  }
+
+  /* .detail-right::after {
+    content: '→';
+    position: fixed;
+    right: 20px;
+    bottom: 24px;
+    font-size: 18px;
+    font-weight: 700;
+    pointer-events: none;
+    letter-spacing: 0;
+  } */
+
+  /* Default gallery: horizontal row, images fill the column height */
+  .gallery-default {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: max-content;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .gallery-slide {
+    height: 100%;
+    width: auto;
+    min-width: 80vw;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gallery-img-natural {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Magazine gallery: horizontal row */
+  .gallery-magazine {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: max-content;
+    gap: 4px;
+    align-items: stretch;
+  }
+
+  .gallery-img-cover {
+    height: 100%;
+    width: auto;
+    min-width: 80vw;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    object-fit: cover;
+  }
+
+  /* Book gallery: horizontal scroll on mobile, each image a slide */
+  .gallery-book {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: max-content;
+    gap: 4px;
+    align-items: stretch;
+  }
+
+  .gallery-book-spread {
+    display: contents; /* spread images become direct flex children */
+  }
+
+  .gallery-book-spread img,
+  .gallery-book-full {
+    height: 100%;
+    width: auto;
+    min-width: 80vw;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    object-fit: contain;
+  }
+
+  .detail-page .archive-label {
+    display: none;
+  }
+
+  .detail-nav-bottom {
+    display: none;
+  }
+}

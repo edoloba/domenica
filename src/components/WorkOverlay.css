@@ -1,0 +1,38 @@
+.work-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.88);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  animation: overlayIn 0.3s ease forwards;
+}
+
+.work-overlay.is-closing {
+  animation: overlayOut 0.3s ease forwards;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes overlayOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.work-overlay-list {
+  pointer-events: auto;
+  padding: 36px 40px 60px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #000;
+}
