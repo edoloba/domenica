@@ -25,8 +25,13 @@ export default function App() {
     }, DURATION)
   }
 
+  // Touch devices can fire a "ghost" mouseenter on tap (to support :hover CSS),
+  // which would open the overlay right before the click handler closes it again.
+  // Hover-driven open/close is desktop-only; tap always goes through handleWorkClick.
+  const hasHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches
+
   const handleWorkEnter = () => {
-    if (isHome) return
+    if (isHome || !hasHover) return
     clearTimeout(closeTimer.current)
     clearTimeout(unmountTimer.current)
     setWorkClosing(false)
@@ -34,7 +39,7 @@ export default function App() {
   }
 
   const handleWorkLeave = () => {
-    if (isHome) return
+    if (isHome || !hasHover) return
     closeTimer.current = setTimeout(startClose, 150)
   }
 

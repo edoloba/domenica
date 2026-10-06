@@ -23,8 +23,9 @@ export const GET_EDITIONS = gql`
   }
 `
 
-export const GET_ARCHIVE = gql`
-  query GetArchive {
+// Single items (used mainly for video — one Archive Item post per file)
+export const GET_ARCHIVE_ITEMS = gql`
+  query GetArchiveItems {
     archiveItems(first: 200) {
       nodes {
         archiveFields {
@@ -37,6 +38,31 @@ export const GET_ARCHIVE = gql`
             }
           }
         }
+      }
+    }
+  }
+`
+
+// Bulk images — the "Archive" page's Gutenberg Gallery block. Images can be
+// picked from the existing media library (not just freshly uploaded), so their
+// post_parent may not point at this page — fetch by explicit ID instead of parentIn.
+export const GET_ARCHIVE_PAGE = gql`
+  query GetArchivePage {
+    page(id: "archive", idType: URI) {
+      content
+    }
+  }
+`
+
+export const GET_ARCHIVE_PAGE_MEDIA = gql`
+  query GetArchivePageMedia($ids: [ID]!) {
+    mediaItems(first: 200, where: { in: $ids }) {
+      nodes {
+        databaseId
+        sourceUrl
+        mediaItemUrl
+        mimeType
+        altText
       }
     }
   }
