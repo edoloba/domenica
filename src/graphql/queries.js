@@ -25,14 +25,16 @@ export const GET_EDITIONS = gql`
 
 export const GET_ARCHIVE = gql`
   query GetArchive {
-    page(id: "archive", idType: URI) {
-      archiveFields {
-        archiveMedia {
-          nodes {
-            sourceUrl
-            mediaItemUrl
-            mimeType
-            altText
+    archiveItems(first: 200) {
+      nodes {
+        archiveFields {
+          media {
+            node {
+              sourceUrl
+              mediaItemUrl
+              mimeType
+              altText
+            }
           }
         }
       }

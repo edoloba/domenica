@@ -17,10 +17,13 @@ export default function Archive() {
   const { data, loading } = useQuery(GET_ARCHIVE);
 
   // Shuffled once per page load, not on every re-render.
-  const items = useMemo(
-    () => shuffle(data?.page?.archiveFields?.archiveMedia?.nodes ?? []),
-    [data]
-  );
+  const items = useMemo(() => {
+    const nodes = data?.archiveItems?.nodes ?? [];
+    const media = nodes
+      .map((n) => n.archiveFields?.media?.node)
+      .filter(Boolean);
+    return shuffle(media);
+  }, [data]);
 
   return (
     <div className="archive-page">
