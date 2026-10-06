@@ -8,14 +8,19 @@ export default function Home() {
   const domActive = hovered === 'domenica'
   const workActive = hovered === 'work'
 
+  // Touch devices can fire a "ghost" mouseenter on tap (to support :hover CSS),
+  // which would open a zone right before the click handler's toggle closes it again.
+  // Hover-driven open/close is desktop-only; tap always goes through onClick.
+  const hasHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches
+
   return (
     <div className="page">
 
       {/* DOMENICA hover/tap zone */}
       <header
         className="top-bar"
-        onMouseEnter={() => setHovered('domenica')}
-        onMouseLeave={() => setHovered(null)}
+        onMouseEnter={() => hasHover && setHovered('domenica')}
+        onMouseLeave={() => hasHover && setHovered(null)}
         onClick={() => setHovered(h => h === 'domenica' ? null : 'domenica')}
       >
         <div className="domenica-wrap">
@@ -44,8 +49,8 @@ export default function Home() {
       {/* WORK hover/tap zone */}
       <div
         className="work-zone"
-        onMouseEnter={() => setHovered('work')}
-        onMouseLeave={() => setHovered(null)}
+        onMouseEnter={() => hasHover && setHovered('work')}
+        onMouseLeave={() => hasHover && setHovered(null)}
         onClick={() => setHovered(h => h === 'work' ? null : 'work')}
       >
         <main className={`main-area ${workActive ? 'is-visible' : ''}`}>
