@@ -65,3 +65,20 @@
 .domenica-overlay-nav a:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 425px) {
+  .domenica-overlay-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px 20px;
+  }
+
+  .domenica-overlay-bio {
+    max-width: 100%;
+  }
+
+  .domenica-overlay-nav {
+    align-items: flex-start;
+  }
+}

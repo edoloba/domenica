@@ -237,7 +237,7 @@ export default function ProjectDetail() {
                     }}
                     style={{ opacity: selectedEditionSlug === e.slug ? 0.35 : 1 }}
                   >
-                    {e.title}
+                    <span className="edition-link-text">{e.title}</span>
                   </button>
                 </li>
               ))}

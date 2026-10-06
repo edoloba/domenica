@@ -33,6 +33,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 /* Description wrapper — natural height */
@@ -163,35 +164,47 @@
 /* Editions list */
 .editions-list {
   list-style: none;
-  border-top: 1.5px solid #000;
-  margin-top: 10px;
-  width: 15%;
-}
-
-.editions-list li {
-  border-bottom: 1.5px solid #000;
+  display: flex;
+  flex-wrap: wrap;
+  /* padding-top: 8px;
+  margin-top: 10px; */
+  width: 100%;
+  gap: 6px 8px;
 }
 
 .edition-link {
   display: block;
-  width: 100%;
-  padding: 8px 0;
+  padding: 2px 10px;
   border: none;
+  border-right: 1.5px solid #000;
   background: none;
   cursor: pointer;
   text-align: left;
   color: #000;
   text-decoration: none;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   font-family: inherit;
-  transition: transform 0.3s ease;
+  transition: opacity 0.2s ease;
+}
+
+.editions-list li:last-child .edition-link {
+  border-right: none;
+}
+
+.edition-link-text {
+  display: inline-block;
+  transition: transform 0.2s ease;
 }
 
 .edition-link:hover {
-  transform: translateX(10px);
+  opacity: 0.5;
+}
+
+.edition-link:hover .edition-link-text {
+  transform: translateX(1.5px);
 }
 
 /* Video — fills remaining space between next-project and WORK */
@@ -400,14 +413,34 @@
     object-fit: contain;
   }
 
-  /* Magazine gallery: horizontal row */
+  /* Magazine gallery: horizontal row (same slide structure as default) */
   .gallery-magazine {
     display: flex;
     flex-direction: row;
     height: 100%;
     width: max-content;
-    gap: 4px;
+    gap: 0;
     align-items: stretch;
+  }
+
+  .gallery-magazine .gallery-slide {
+    height: 100%;
+    width: auto;
+    min-width: 80vw;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gallery-img-magazine {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
   }
 
   .gallery-img-cover {

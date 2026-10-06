@@ -134,8 +134,19 @@
 
   /* Space between top-bar and work list */
   .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
     padding-bottom: 16px;
     margin-bottom: 0;
+  }
+
+  .domenica-wrap {
+    max-width: 100%;
+  }
+
+  .social-nav {
+    align-items: flex-start;
   }
 
   .main-area {
