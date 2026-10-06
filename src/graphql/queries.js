@@ -23,6 +23,23 @@ export const GET_EDITIONS = gql`
   }
 `
 
+export const GET_ARCHIVE = gql`
+  query GetArchive {
+    page(id: "archive", idType: URI) {
+      archiveFields {
+        archiveMedia {
+          nodes {
+            sourceUrl
+            mediaItemUrl
+            mimeType
+            altText
+          }
+        }
+      }
+    }
+  }
+`
+
 export const GET_PROJECTS = gql`
   query GetProjects {
     projects(first: 100, where: { orderby: { field: DATE, order: ASC } }) {

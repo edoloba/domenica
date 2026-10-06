@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './Footer.css'
 
 export default function Footer({ onWorkEnter, onWorkLeave, onWorkClick }) {
@@ -16,7 +17,7 @@ export default function Footer({ onWorkEnter, onWorkLeave, onWorkClick }) {
         {/* <span className="footer-label">ARCHIVE</span> */}
       </div>
       <div>
-        <span className="footer-label">ARCHIVE</span>
+        <Link to="/archive" className="footer-label">ARCHIVE</Link>
       </div>
       {/* <a
         href="https://www.linkedin.com/in/edoardo-lovino/"

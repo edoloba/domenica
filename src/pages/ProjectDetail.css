@@ -190,6 +190,10 @@
   transition: opacity 0.2s ease;
 }
 
+.edition-link:first-child {
+  padding-left: 0;
+}
+
 .editions-list li:last-child .edition-link {
   border-right: none;
 }

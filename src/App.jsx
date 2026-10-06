@@ -3,12 +3,14 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import ProjectDetail from './pages/ProjectDetail'
 import EditionDetail from './pages/EditionDetail'
+import Archive from './pages/Archive'
 import Footer from './components/Footer'
 import WorkOverlay from './components/WorkOverlay'
 
 export default function App() {
   const location = useLocation()
   const isHome = location.pathname === '/'
+  const isArchive = location.pathname === '/archive'
   const [workOpen, setWorkOpen] = useState(false)
   const [workClosing, setWorkClosing] = useState(false)
   const closeTimer = useRef(null)
@@ -57,6 +59,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="/editions/:slug" element={<EditionDetail />} />
+        <Route path="/archive" element={<Archive />} />
       </Routes>
       {workOpen && (
         <WorkOverlay
@@ -66,11 +69,13 @@ export default function App() {
           onSelect={startClose}
         />
       )}
-      <Footer
-        onWorkEnter={handleWorkEnter}
-        onWorkLeave={handleWorkLeave}
-        onWorkClick={handleWorkClick}
-      />
+      {!isArchive && (
+        <Footer
+          onWorkEnter={handleWorkEnter}
+          onWorkLeave={handleWorkLeave}
+          onWorkClick={handleWorkClick}
+        />
+      )}
     </>
   )
 }

@@ -207,7 +207,7 @@ export default function ProjectDetail() {
             )}
           </div>
 
-          <div className="external-link">
+          <div className="external-link" style={!projectFields?.externalLink ? { margin: 0 } : undefined}>
             {projectFields?.externalLink && (
               <a
                 className="detail-external-link"
