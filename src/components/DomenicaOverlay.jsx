@@ -24,7 +24,7 @@ export default function DomenicaOverlay({ closing, onMouseEnter, onMouseLeave })
           </span>
         </div>
         <nav className="domenica-overlay-nav">
-          <a href="#">CV</a>
+          <a href="/Vittoria-Lovino-CV.pdf" download>CV</a>
           <a href="https://www.instagram.com/__svtl/" target="_blank" rel="noreferrer">INSTA</a>
           <a href="mailto:domenicaarts@gmail.com">MAIL</a>
         </nav>

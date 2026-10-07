@@ -2,6 +2,7 @@
   width: 100%;
   border-top: 1.5px solid #000;
   overflow-x: hidden;
+  margin-top: auto; /* sticks to the bottom when it fits; scrolls normally (from the top) when it doesn't */
 }
 
 .work-row {
@@ -72,5 +73,19 @@
     gap: 2px;
     text-align: right;
     font-size: 11px;
+  }
+}
+
+@media (max-width: 375px) {
+  .work-year {
+    font-size: 10px;
+  }
+
+  .work-title {
+    font-size: 12px;
+  }
+
+  .work-tags {
+    font-size: 10px;
   }
 }

@@ -13,6 +13,7 @@ export default function App() {
   const isArchive = location.pathname === '/archive'
   const [workOpen, setWorkOpen] = useState(false)
   const [workClosing, setWorkClosing] = useState(false)
+  const [homeHovered, setHomeHovered] = useState(null) // 'domenica' | 'work' | null — shared with Home's own zones
   const closeTimer = useRef(null)
   const unmountTimer = useRef(null)
   const DURATION = 300
@@ -44,7 +45,10 @@ export default function App() {
   }
 
   const handleWorkClick = () => {
-    if (isHome) return
+    if (isHome) {
+      setHomeHovered(h => h === 'work' ? null : 'work')
+      return
+    }
     if (workOpen) startClose()
     else setWorkOpen(true)
   }
@@ -61,7 +65,7 @@ export default function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home hovered={homeHovered} setHovered={setHomeHovered} />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="/editions/:slug" element={<EditionDetail />} />
         <Route path="/archive" element={<Archive />} />

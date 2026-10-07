@@ -1,10 +1,7 @@
-import { useState } from 'react'
 import WorkList from '../components/WorkList'
 import '../App.css'
 
-export default function Home() {
-  const [hovered, setHovered] = useState(null)
-
+export default function Home({ hovered, setHovered }) {
   const domActive = hovered === 'domenica'
   const workActive = hovered === 'work'
 
@@ -40,7 +37,7 @@ export default function Home() {
         </div>
 
         <nav className={`social-nav ${domActive ? 'is-visible' : ''}`}>
-          <a href="#">CV</a>
+          <a href="/Vittoria-Lovino-CV.pdf" download>CV</a>
           <a href="https://www.instagram.com/__svtl/" target="_blank">INSTA</a>
           <a href="mailto:domenicaarts@gmail.com" target="_blank">MAIL</a>
         </nav>

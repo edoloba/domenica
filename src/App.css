@@ -17,18 +17,27 @@
 
 /* ── TOP BAR ── */
 .top-bar {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
 
 .domenica-wrap {
-  max-width: 35%;
+  position: relative;
+  width: 35%;
 }
 
-/* Bio text — sempre nel DOM, fade in/out */
+/* Bio text — sempre nel DOM, fade in/out. Absolutely positioned so it overlays
+   instead of reserving its (tall) layout height when hidden — otherwise it pushes
+   the work list down on any viewport short enough for that height to matter. */
 .bio-text {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.35s ease;
 }
 
@@ -39,10 +48,14 @@
 
 .bio-text.is-visible {
   opacity: 1;
+  pointer-events: auto;
 }
 
-/* Social nav — sempre nel DOM, fade in/out */
+/* Social nav — sempre nel DOM, fade in/out. Same reasoning as .bio-text. */
 .social-nav {
+  position: absolute;
+  top: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -85,9 +98,9 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   overflow-y: auto;
-  padding-bottom: 28px;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 56px; /* clears the fixed footer so the last row isn't hidden under it */
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
@@ -115,38 +128,14 @@
     padding: 24px 20px 15px 20px;
   }
 
-  /* Bio text: no space when hidden */
-  .bio-text {
-    display: none;
-  }
-
-  .bio-text.is-visible {
-    display: block;
-  }
-
-  .social-nav {
-    display: none;
-  }
-
-  .social-nav.is-visible {
-    display: flex;
-  }
-
   /* Space between top-bar and work list */
   .top-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
     padding-bottom: 16px;
     margin-bottom: 0;
   }
 
   .domenica-wrap {
-    max-width: 100%;
-  }
-
-  .social-nav {
-    align-items: flex-start;
+    width: 100%;
   }
 
   .main-area {

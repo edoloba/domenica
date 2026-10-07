@@ -28,11 +28,20 @@
 
 .work-overlay-list {
   pointer-events: auto;
-  padding: 36px 40px 60px;
+  padding: 36px 40px 0;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #000;
+  max-height: calc(100vh - 90px); /* clears the fixed footer, scrolls internally if taller */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 425px) {
+  .work-overlay-list {
+    padding: 24px 20px 0;
+  }
 }
