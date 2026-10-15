@@ -1,4 +1,5 @@
 .page {
+  position: relative;
   height: 100vh;
   overflow: hidden;
   padding: 36px 40px 15px 40px;
@@ -16,16 +17,48 @@
 }
 
 /* ── TOP BAR ── */
-.top-bar {
-  position: relative;
+/* Reserves the DOMENICA label's line-height in normal flow so home-stage
+   centers below it exactly as before — the real interactive zone (below)
+   is absolutely positioned and doesn't take part in this layout at all. */
+.top-bar-spacer {
+  height: 22px;
+}
+
+/* One wrapping zone for the label + bio-text + social-nav. Idle, it's
+   pointer-events:none and collapsed to the label's own height, so empty space
+   passes clicks/hover through to the video underneath. Once active it grows
+   into one real hoverable rectangle spanning the whole revealed content —
+   no more bridging multiple disjoint elements with a timer, which can't
+   reliably survive a slow/long mouse trip from the label across to the links. */
+.dom-hover-zone {
+  position: absolute;
+  /* absolute positioning resolves against the padding BOX (flush with .page's
+     own edge), not its content box — so this has to repeat .page's own
+     padding explicitly, or the zone (and the label inside it) renders flush
+     against the viewport instead of where the rest of the page's content sits. */
+  top: 36px;
+  left: 40px;
+  right: 40px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.dom-hover-zone.is-active {
+  /* Stops short of the fixed footer (56px, same clearance used elsewhere) —
+     its z-index beats the video, but it would also beat the footer's own
+     (z-index:auto), blocking WORK/ARCHIVE clicks while the bio is open
+     if it reached all the way to the bottom edge. */
+  bottom: 56px;
+  pointer-events: auto;
 }
 
 .domenica-wrap {
   position: relative;
   width: 35%;
+  pointer-events: auto;
 }
 
 /* Bio text — sempre nel DOM, fade in/out. Absolutely positioned so it overlays
@@ -83,24 +116,47 @@
   text-decoration: underline;
 }
 
-/* ── WORK ZONE ── */
-.work-zone {
+/* ── HOME STAGE (centered hero video + WORK list, stacked) ── */
+.home-stage {
+  position: relative;
   flex: 1;
   min-height: 0;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
-/* Work list container — sempre nel DOM, fade in/out */
+.home-video {
+  max-width: 480px;
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  transition: opacity 0.35s ease;
+}
+
+.home-video.is-dimmed {
+  opacity: 0.15;
+}
+
+/* Work list — overlays the video, sempre nel DOM, fade in/out.
+   Bottom-anchored with no top/height: the box sizes to its actual content
+   (grows upward as rows are added), instead of stretching to fill the whole
+   stage — so the hover-to-stay-open zone matches only the real list height,
+   not the empty space above it. max-height is just a safety ceiling that
+   triggers internal scroll if the list is ever taller than the stage. */
 .main-area {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* Stops short of the fixed footer (56px) instead of reaching bottom:0 — its
+     hit-box (pointer-events:auto while visible) would otherwise sit right over
+     WORK/ARCHIVE, and relying on DOM order alone to keep the footer clickable
+     on top is fragile. */
+  bottom: 56px;
+  max-height: calc(100% - 56px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 56px; /* clears the fixed footer so the last row isn't hidden under it */
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
@@ -128,14 +184,58 @@
     padding: 24px 20px 15px 20px;
   }
 
-  /* Space between top-bar and work list */
-  .top-bar {
-    padding-bottom: 16px;
-    margin-bottom: 0;
+  /* CV/INSTA/MAIL sat top-right, absolutely positioned — fine next to the
+     35%-wide bio text on desktop, but on mobile domenica-wrap is full-width,
+     so it would overlap the bio paragraph instead of sitting beside it.
+     Switch everything to normal flow and stack it below the paragraph instead. */
+  .dom-hover-zone {
+    top: 24px;
+    left: 20px;
+    right: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dom-hover-zone.is-active {
+    bottom: 120px;
   }
 
   .domenica-wrap {
     width: 100%;
+    position: static;
+  }
+
+  .bio-text {
+    position: static;
+    width: auto;
+    display: none;
+  }
+
+  .bio-text.is-visible {
+    display: block;
+    margin-top: 12px;
+  }
+
+  .social-nav {
+    position: static;
+    align-items: flex-start;
+    margin-top: 16px;
+    display: none;
+  }
+
+  .social-nav.is-visible {
+    display: flex;
+    flex-direction: row;
+    gap: 9px;
+  }
+
+  .social-nav.is-visible a {
+    border-right: 1.5px solid #000;
+    padding-right: 9px;
+  }
+
+  .social-nav.is-visible a:last-child {
+    border-right: none;
   }
 
   .main-area {
@@ -143,7 +243,7 @@
     overflow-x: hidden;
   }
 
-  .work-zone {
-    overflow: hidden;
+  .home-video {
+    max-width: 260px;
   }
 }

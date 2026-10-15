@@ -3,14 +3,17 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import ProjectDetail from './pages/ProjectDetail'
 import EditionDetail from './pages/EditionDetail'
-import Archive from './pages/Archive'
+// Archive disabled until there's content to show — re-enable the import,
+// the route below, and the ARCHIVE link in Footer.jsx once the sister has
+// added media to the Archive page/items.
+// import Archive from './pages/Archive'
 import Footer from './components/Footer'
 import WorkOverlay from './components/WorkOverlay'
+import Cursor from './components/Cursor'
 
 export default function App() {
   const location = useLocation()
   const isHome = location.pathname === '/'
-  const isArchive = location.pathname === '/archive'
   const [workOpen, setWorkOpen] = useState(false)
   const [workClosing, setWorkClosing] = useState(false)
   const [homeHovered, setHomeHovered] = useState(null) // 'domenica' | 'work' | null — shared with Home's own zones
@@ -31,8 +34,24 @@ export default function App() {
   // Hover-driven open/close is desktop-only; tap always goes through handleWorkClick.
   const hasHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches
 
+  // Bridges the footer "WORK" label and the revealed list (wherever it lives —
+  // the overlay on other pages, or Home's own stage) into one hoverable zone:
+  // entering either cancels the pending close, leaving either schedules it.
+  const handleHomeWorkEnter = () => {
+    if (!hasHover) return
+    clearTimeout(closeTimer.current)
+    setHomeHovered('work')
+  }
+  const handleHomeWorkLeave = () => {
+    if (!hasHover) return
+    closeTimer.current = setTimeout(() => {
+      setHomeHovered(h => (h === 'work' ? null : h))
+    }, 150)
+  }
+
   const handleWorkEnter = () => {
-    if (isHome || !hasHover) return
+    if (!hasHover) return
+    if (isHome) return handleHomeWorkEnter()
     clearTimeout(closeTimer.current)
     clearTimeout(unmountTimer.current)
     setWorkClosing(false)
@@ -40,7 +59,8 @@ export default function App() {
   }
 
   const handleWorkLeave = () => {
-    if (isHome || !hasHover) return
+    if (!hasHover) return
+    if (isHome) return handleHomeWorkLeave()
     closeTimer.current = setTimeout(startClose, 150)
   }
 
@@ -64,11 +84,22 @@ export default function App() {
 
   return (
     <>
+      <Cursor />
       <Routes>
-        <Route path="/" element={<Home hovered={homeHovered} setHovered={setHomeHovered} />} />
+        <Route
+          path="/"
+          element={
+            <Home
+              hovered={homeHovered}
+              setHovered={setHomeHovered}
+              onWorkAreaEnter={handleHomeWorkEnter}
+              onWorkAreaLeave={handleHomeWorkLeave}
+            />
+          }
+        />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="/editions/:slug" element={<EditionDetail />} />
-        <Route path="/archive" element={<Archive />} />
+        {/* <Route path="/archive" element={<Archive />} /> */}
       </Routes>
       {workOpen && (
         <WorkOverlay
@@ -78,13 +109,11 @@ export default function App() {
           onSelect={startClose}
         />
       )}
-      {!isArchive && (
-        <Footer
-          onWorkEnter={handleWorkEnter}
-          onWorkLeave={handleWorkLeave}
-          onWorkClick={handleWorkClick}
-        />
-      )}
+      <Footer
+        onWorkEnter={handleWorkEnter}
+        onWorkLeave={handleWorkLeave}
+        onWorkClick={handleWorkClick}
+      />
     </>
   )
 }

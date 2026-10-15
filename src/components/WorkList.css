@@ -2,7 +2,6 @@
   width: 100%;
   border-top: 1.5px solid #000;
   overflow-x: hidden;
-  margin-top: auto; /* sticks to the bottom when it fits; scrolls normally (from the top) when it doesn't */
 }
 
 .work-row {

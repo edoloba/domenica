@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import './Footer.css'
 
 export default function Footer({ onWorkEnter, onWorkLeave, onWorkClick }) {
@@ -16,9 +16,12 @@ export default function Footer({ onWorkEnter, onWorkLeave, onWorkClick }) {
         {/* <span className="footer-sep">|</span> */}
         {/* <span className="footer-label">ARCHIVE</span> */}
       </div>
+      {/* Archive disabled until there's content to show — re-enable once
+          the sister has added media to the Archive page/items.
       <div>
         <Link to="/archive" className="footer-label">ARCHIVE</Link>
       </div>
+      */}
       {/* <a
         href="https://www.linkedin.com/in/edoardo-lovino/"
         target="_blank"
