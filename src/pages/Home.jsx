@@ -1,5 +1,7 @@
 import { useRef } from 'react'
+import { useQuery } from '@apollo/client'
 import WorkList from '../components/WorkList'
+import { GET_HOME_MEDIA } from '../graphql/queries'
 import '../App.css'
 
 export default function Home({ hovered, setHovered, onWorkAreaEnter, onWorkAreaLeave }) {
@@ -7,6 +9,15 @@ export default function Home({ hovered, setHovered, onWorkAreaEnter, onWorkAreaL
   const workActive = hovered === 'work'
   const videoRef = useRef(null)
   const domCloseTimer = useRef(null)
+
+  // Hero media comes from WordPress (single File field, same pattern as
+  // Archive Item) so it isn't hardcoded — mimeType tells us whether to
+  // render it as a video or a plain image.
+  const { data } = useQuery(GET_HOME_MEDIA)
+  const media = data?.page?.homeFields?.media?.node
+  const isVideo = (media?.mimeType || '').startsWith('video/')
+  const isGif = media?.mimeType === 'image/gif'
+  const imageSrc = media && isGif ? media.sourceUrl.replace(/-scaled(\.[^.]+)$/, '$1') : media?.sourceUrl
 
   // Touch devices can fire a "ghost" mouseenter on tap (to support :hover CSS),
   // which would open a zone right before the click handler's toggle closes it again.
@@ -91,17 +102,25 @@ export default function Home({ hovered, setHovered, onWorkAreaEnter, onWorkAreaL
       {/* Centered hero video + WORK list, stacked in the same area.
           The WORK trigger itself lives in the footer (shared state via props). */}
       <div className="home-stage">
-        <video
-          ref={videoRef}
-          className={`home-video${(workActive || domActive) ? ' is-dimmed' : ''}`}
-          src="/home-video.mp4"
-          muted
-          loop
-          playsInline
-          onMouseEnter={handleVideoEnter}
-          onMouseLeave={handleVideoLeave}
-          onClick={handleVideoClick}
-        />
+        {media && (isVideo ? (
+          <video
+            ref={videoRef}
+            className={`home-media${(workActive || domActive) ? ' is-dimmed' : ''}`}
+            src={media.mediaItemUrl}
+            muted
+            loop
+            playsInline
+            onMouseEnter={handleVideoEnter}
+            onMouseLeave={handleVideoLeave}
+            onClick={handleVideoClick}
+          />
+        ) : (
+          <img
+            className={`home-media${(workActive || domActive) ? ' is-dimmed' : ''}`}
+            src={imageSrc}
+            alt={media.altText || ''}
+          />
+        ))}
         <main
           className={`main-area ${workActive ? 'is-visible' : ''}`}
           onMouseEnter={onWorkAreaEnter}

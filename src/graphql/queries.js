@@ -68,6 +68,27 @@ export const GET_ARCHIVE_PAGE_MEDIA = gql`
   }
 `
 
+// Home hero media — single File field on the "Home" page, same pattern as
+// Archive Item's media field. mimeType tells the frontend whether to render
+// an <img> (image/gif) or a <video>, so this works for either without any
+// extra "type" field to keep in sync.
+export const GET_HOME_MEDIA = gql`
+  query GetHomeMedia {
+    page(id: "home", idType: URI) {
+      homeFields {
+        media {
+          node {
+            sourceUrl
+            mediaItemUrl
+            mimeType
+            altText
+          }
+        }
+      }
+    }
+  }
+`
+
 export const GET_PROJECTS = gql`
   query GetProjects {
     projects(first: 100, where: { orderby: { field: DATE, order: ASC } }) {
