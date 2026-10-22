@@ -197,7 +197,15 @@
   }
 
   .dom-hover-zone.is-active {
-    bottom: 120px;
+    bottom: 100px;
+    /* top+bottom both set = fixed-height box. The bio paragraph is taller
+       than that box on narrow screens, and with no overflow rule here the
+       excess was spilling past the box and, on mobile Safari, scrolling the
+       whole page (hiding DOMENICA) instead of staying contained by .page's
+       overflow:hidden. Scroll inside the zone instead — the page itself
+       never needs to move. */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .domenica-wrap {
@@ -238,9 +246,20 @@
     border-right: none;
   }
 
+  /* Breathing room at the end of the scrollable bio panel, so CV/INSTA/MAIL
+     doesn't sit flush against the bottom edge of the zone (which already
+     stops 120px above the footer, but felt cramped without any padding). */
+  .social-nav.is-visible {
+    padding-bottom: 24px;
+  }
+
   .main-area {
     overflow-y: auto;
     overflow-x: hidden;
+    /* A bit more clearance than desktop's 56px — mobile's fixed footer sits
+       closer to the edge and reported as overlapping the last row. */
+    bottom: 76px;
+    max-height: calc(100% - 76px);
   }
 
   .home-media {
