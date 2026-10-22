@@ -93,7 +93,7 @@ export default function Home({ hovered, setHovered, onWorkAreaEnter, onWorkAreaL
         </div>
 
         <nav className={`social-nav ${domActive ? 'is-visible' : ''}`}>
-          <a href="/Vittoria-Lovino-CV.pdf" download>CV</a>
+          <a href="/Domenica_CV.pdf" download>CV</a>
           <a href="https://www.instagram.com/__svtl/" target="_blank">INSTA</a>
           <a href="mailto:domenicaarts@gmail.com" target="_blank">MAIL</a>
         </nav>
