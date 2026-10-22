@@ -84,6 +84,14 @@ export const GET_HOME_MEDIA = gql`
             altText
           }
         }
+        mediamobile {
+          node {
+            sourceUrl
+            mediaItemUrl
+            mimeType
+            altText
+          }
+        }
       }
     }
   }

@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import WorkList from '../components/WorkList'
 import { GET_HOME_MEDIA } from '../graphql/queries'
@@ -10,11 +10,26 @@ export default function Home({ hovered, setHovered, onWorkAreaEnter, onWorkAreaL
   const videoRef = useRef(null)
   const domCloseTimer = useRef(null)
 
+  // Same breakpoint used throughout App.css for the mobile layout.
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 480px)').matches
+  )
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 480px)')
+    const handleChange = (e) => setIsMobile(e.matches)
+    mq.addEventListener('change', handleChange)
+    return () => mq.removeEventListener('change', handleChange)
+  }, [])
+
   // Hero media comes from WordPress (single File field, same pattern as
   // Archive Item) so it isn't hardcoded — mimeType tells us whether to
-  // render it as a video or a plain image.
+  // render it as a video or a plain image. A separate "mediamobile" field
+  // lets a mobile-specific cut replace the desktop one; falls back to the
+  // desktop media until a mobile file is uploaded.
   const { data } = useQuery(GET_HOME_MEDIA)
-  const media = data?.page?.homeFields?.media?.node
+  const desktopMedia = data?.page?.homeFields?.media?.node
+  const mobileMedia = data?.page?.homeFields?.mediamobile?.node
+  const media = (isMobile && mobileMedia) ? mobileMedia : desktopMedia
   const isVideo = (media?.mimeType || '').startsWith('video/')
   const isGif = media?.mimeType === 'image/gif'
   const imageSrc = media && isGif ? media.sourceUrl.replace(/-scaled(\.[^.]+)$/, '$1') : media?.sourceUrl
@@ -73,7 +88,7 @@ export default function Home({ hovered, setHovered, onWorkAreaEnter, onWorkAreaL
       >
         <div className="domenica-wrap">
           <span
-            className="nav-label"
+            className="nav-label dom-label"
             onClick={() => setHovered(h => h === 'domenica' ? null : 'domenica')}
           >
             DOMENICA
@@ -104,6 +119,7 @@ export default function Home({ hovered, setHovered, onWorkAreaEnter, onWorkAreaL
       <div className="home-stage">
         {media && (isVideo ? (
           <video
+            key={media.mediaItemUrl}
             ref={videoRef}
             className={`home-media${(workActive || domActive) ? ' is-dimmed' : ''}`}
             src={media.mediaItemUrl}
@@ -117,6 +133,7 @@ export default function Home({ hovered, setHovered, onWorkAreaEnter, onWorkAreaL
           />
         ) : (
           <img
+            key={media.mediaItemUrl}
             className={`home-media${(workActive || domActive) ? ' is-dimmed' : ''}`}
             src={imageSrc}
             alt={media.altText || ''}

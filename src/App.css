@@ -53,6 +53,7 @@
      if it reached all the way to the bottom edge. */
   bottom: 56px;
   pointer-events: auto;
+  height: 47vh;
 }
 
 .domenica-wrap {
@@ -82,6 +83,13 @@
 .bio-text.is-visible {
   opacity: 1;
   pointer-events: auto;
+  padding-left: 18.044vw;
+  /* Overrides the base rule's width:100% (which resolves against
+     .domenica-wrap's own 35%-wide box, the containing block for this
+     absolutely positioned element) — without this, adding padding-left just
+     squeezes the usable width further and the paragraph wraps narrower and
+     taller instead of spreading out horizontally. */
+  width: 50vw;
 }
 
 /* Social nav — sempre nel DOM, fade in/out. Same reasoning as .bio-text. */
@@ -116,21 +124,30 @@
   text-decoration: underline;
 }
 
-/* ── HOME STAGE (centered hero video + WORK list, stacked) ── */
+/* ── HOME STAGE (full-bleed hero video background + WORK list, stacked) ── */
 .home-stage {
   position: relative;
   flex: 1;
   min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
 }
 
+/* Fixed + inset:0 covers the whole viewport regardless of .page's padding
+   or .home-stage's own box — it's the page background now, not a centered
+   element in the flex layout. No z-index here on purpose: .page has
+   position:relative but no z-index of its own, so it never establishes a
+   stacking context — a negative z-index here would get resolved against an
+   ancestor further up the tree, where .page's own opaque white background
+   paints as a normal in-flow block ON TOP of it (invisible video). Staying
+   at z-index:auto and rendering before main-area in the JSX is enough: among
+   auto/0 siblings, tree order alone puts this below main-area, and
+   dom-hover-zone's explicit z-index:20 beats it regardless of order. */
 .home-media {
-  max-width: 480px;
-  width: 100%;
-  height: auto;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
   cursor: pointer;
   transition: opacity 0.35s ease;
 }
@@ -176,6 +193,16 @@
   text-transform: uppercase;
 }
 
+/* Calibrated against the full-bleed background video: at a 1452px-wide
+   viewport, the video's visual reference point sits 262px from the left
+   edge. vw instead of a fixed px keeps DOMENICA aligned with it as the
+   video scales with the viewport (262 / 1452 ≈ 18.044vw). This tracks width
+   only — object-fit:cover scales against whichever dimension overflows, so
+   viewports with a very different aspect ratio than 1452:567 will drift. */
+.dom-label {
+  padding-left: 18.044vw;
+}
+
 
 /* ── Mobile ────────────────────────────────────────────────────────────────── */
 
@@ -196,16 +223,14 @@
     align-items: flex-start;
   }
 
+  /* The 1452px-viewport video-alignment reference doesn't apply to the
+     stacked mobile layout. */
+  .dom-label {
+    padding-left: 0;
+  }
+
   .dom-hover-zone.is-active {
     bottom: 100px;
-    /* top+bottom both set = fixed-height box. The bio paragraph is taller
-       than that box on narrow screens, and with no overflow rule here the
-       excess was spilling past the box and, on mobile Safari, scrolling the
-       whole page (hiding DOMENICA) instead of staying contained by .page's
-       overflow:hidden. Scroll inside the zone instead — the page itself
-       never needs to move. */
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
 
   .domenica-wrap {
@@ -260,9 +285,5 @@
        closer to the edge and reported as overlapping the last row. */
     bottom: 76px;
     max-height: calc(100% - 76px);
-  }
-
-  .home-media {
-    max-width: 260px;
   }
 }
