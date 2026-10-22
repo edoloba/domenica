@@ -1,6 +1,12 @@
 .page {
   position: relative;
   height: 100vh;
+  /* dvh accounts for iOS Safari's collapsing address bar — plain 100vh uses
+     the "large" viewport (bar hidden), so on first load (bar visible) the
+     page is briefly taller than what's actually visible and scrolls until
+     the bar auto-hides. Falls back to the vh line above on browsers that
+     don't support dvh. */
+  height: 100dvh;
   overflow: hidden;
   padding: 36px 40px 15px 40px;
   display: flex;
@@ -147,6 +153,7 @@
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   object-fit: cover;
   cursor: pointer;
   transition: opacity 0.35s ease;
@@ -231,6 +238,12 @@
 
   .dom-hover-zone.is-active {
     bottom: 100px;
+    /* The desktop rule's height:47vh leaks in here otherwise — with top,
+       bottom AND height all set on an absolute box, bottom gets ignored
+       per spec and the zone extends 47vh down from top regardless of the
+       100px footer clearance above, which is almost certainly today's
+       lingering mobile scroll. */
+    height: auto;
   }
 
   .domenica-wrap {
