@@ -372,17 +372,19 @@
     margin-bottom: 20px;
   }
 
-  /* Row-reverse + space-between crams NEXT PROJECT against the meta/PREVIOUS
-     block on narrow screens — stack them instead. */
   .detail-bottom-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
     padding-bottom: 32px;
   }
 
   .detail-bottom-left {
     gap: 10px;
+  }
+
+  /* Drop the project title from NEXT/PREVIOUS PROJECT links on narrow
+     screens — the full title made the row-reverse/space-between row wrap
+     badly; the label alone fits cleanly. */
+  .detail-next-title {
+    display: none;
   }
 
   /* Right column: fixed height container, scrolls horizontally.

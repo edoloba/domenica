@@ -251,7 +251,7 @@ export default function ProjectDetail() {
           <div className="detail-bottom-row">
             {nextProject && (
               <Link to={`/projects/${nextProject.slug}`} className="detail-next">
-                NEXT PROJECT : {nextProject.title}
+                NEXT PROJECT<span className="detail-next-title"> : {nextProject.title}</span>
               </Link>
             )}
             <div className="detail-bottom-left">
@@ -263,7 +263,7 @@ export default function ProjectDetail() {
               </div>
               {previousProject && (
                 <Link to={`/projects/${previousProject.slug}`} className="detail-next">
-                  PREVIOUS PROJECT : {previousProject.title}
+                  PREVIOUS PROJECT<span className="detail-next-title"> : {previousProject.title}</span>
                 </Link>
               )}
             </div>
