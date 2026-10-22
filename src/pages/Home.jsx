@@ -110,6 +110,7 @@ export default function Home({ hovered, setHovered, onWorkAreaEnter, onWorkAreaL
             muted
             loop
             playsInline
+            autoPlay={!hasHover}
             onMouseEnter={handleVideoEnter}
             onMouseLeave={handleVideoLeave}
             onClick={handleVideoClick}
