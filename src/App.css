@@ -247,6 +247,11 @@
   .bio-text.is-visible {
     display: block;
     margin-top: 12px;
+    /* The 1452px-viewport video-alignment reference (padding-left/width from
+       the desktop rule) doesn't apply to the stacked mobile layout — same
+       reasoning as .dom-label above. */
+    padding-left: 0;
+    width: auto;
   }
 
   .social-nav {
