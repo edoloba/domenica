@@ -40,7 +40,7 @@
   -webkit-overflow-scrolling: touch;
 }
 
-@media (max-width: 425px) {
+@media (max-width: 480px) {
   .work-overlay-list {
     padding: 24px 20px 0;
   }

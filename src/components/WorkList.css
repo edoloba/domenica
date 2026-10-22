@@ -41,7 +41,7 @@
 
 /* ── Mobile ────────────────────────────────────────────────────────────────── */
 
-@media (max-width: 425px) {
+@media (max-width: 480px) {
   .work-row {
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto;

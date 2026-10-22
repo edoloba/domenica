@@ -78,7 +78,7 @@
   right: 10px;
 }
 
-@media (max-width: 425px) {
+@media (max-width: 480px) {
   .lightbox-img {
     max-width: calc(100% - 48px);
     max-height: calc(100vh - 100px);
