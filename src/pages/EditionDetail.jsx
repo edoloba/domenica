@@ -3,7 +3,6 @@ import { useQuery, gql } from '@apollo/client'
 import { GET_EDITIONS } from '../graphql/queries'
 import VideoEmbed from '../components/VideoEmbed'
 import Gallery from '../components/Gallery'
-import DomenicaLink from '../components/DomenicaLink'
 import './ProjectDetail.css'
 
 function extractGalleryOrder(content) {
@@ -131,7 +130,10 @@ export default function EditionDetail() {
       {/* ── LEFT COLUMN ── */}
       <aside className="detail-left">
 
-        <DomenicaLink className="detail-nav-label" />
+        {/* Reserves the space DOMENICA's own line-height used to take here —
+            DOMENICA itself is now rendered globally by App.jsx
+            (position:fixed), in the exact same spot as on every other page. */}
+        <div className="top-bar-spacer" />
 
         {projectFields?.description && (
           <p className="detail-description">{projectFields.description}</p>

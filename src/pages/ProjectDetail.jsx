@@ -4,7 +4,6 @@ import { useQuery, gql } from "@apollo/client";
 import { GET_PROJECTS, GET_EDITIONS } from "../graphql/queries";
 import VideoEmbed from "../components/VideoEmbed";
 import Gallery from "../components/Gallery";
-import DomenicaLink from "../components/DomenicaLink";
 import "./ProjectDetail.css";
 
 // ─── Queries ─────────────────────────────────────────────────────────────────
@@ -173,8 +172,10 @@ export default function ProjectDetail() {
       {/* ── LEFT COLUMN ── */}
       <aside className="detail-left">
 
-        {/* Nav top — always outside the split halves */}
-        <DomenicaLink className="detail-nav-label" />
+        {/* Reserves the space DOMENICA's own line-height used to take here —
+            DOMENICA itself is now rendered globally by App.jsx
+            (position:fixed), in the exact same spot as on every other page. */}
+        <div className="top-bar-spacer" />
 
         <div className="detail-left-top">
 

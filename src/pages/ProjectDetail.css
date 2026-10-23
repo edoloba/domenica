@@ -56,20 +56,6 @@
 
 /* ── Nav label ─────────────────────────────────────────────────────────────── */
 
-.detail-nav-label {
-  display: block;
-  position: relative;
-  z-index: 51;
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: #000;
-  text-decoration: none;
-  cursor: default;
-  user-select: none;
-}
-
 .detail-nav-bottom {
   margin-top: 12px;
 }

@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Home from './pages/Home'
 import ProjectDetail from './pages/ProjectDetail'
 import EditionDetail from './pages/EditionDetail'
@@ -9,16 +9,19 @@ import EditionDetail from './pages/EditionDetail'
 // import Archive from './pages/Archive'
 import Footer from './components/Footer'
 import WorkOverlay from './components/WorkOverlay'
+import DomenicaPanel from './components/DomenicaPanel'
 import Cursor from './components/Cursor'
 
 export default function App() {
   const location = useLocation()
+  const navigate = useNavigate()
   const isHome = location.pathname === '/'
   const [workOpen, setWorkOpen] = useState(false)
   const [workClosing, setWorkClosing] = useState(false)
-  const [homeHovered, setHomeHovered] = useState(null) // 'domenica' | 'work' | null — shared with Home's own zones
+  const [homeHovered, setHomeHovered] = useState(null) // 'domenica' | 'work' | null — shared with Home's own video-dimming
   const closeTimer = useRef(null)
   const unmountTimer = useRef(null)
+  const domCloseTimer = useRef(null)
   const DURATION = 300
 
   const startClose = () => {
@@ -73,6 +76,31 @@ export default function App() {
     else setWorkOpen(true)
   }
 
+  // DOMENICA panel is rendered once here (position:fixed, see App.css) so it
+  // sits in the exact same spot with the exact same layout on every page.
+  // Hover opens it in place everywhere (desktop only); click's behavior
+  // depends on where we are — on Home it toggles in place (the only way to
+  // open it on touch devices, which have no hover), elsewhere it navigates
+  // home (also the only way back to Home from a project/edition page).
+  const handleDomEnter = () => {
+    if (!hasHover) return
+    clearTimeout(domCloseTimer.current)
+    setHomeHovered('domenica')
+  }
+  const handleDomLeave = () => {
+    if (!hasHover) return
+    domCloseTimer.current = setTimeout(() => {
+      setHomeHovered(h => (h === 'domenica' ? null : h))
+    }, 150)
+  }
+  const handleDomClick = () => {
+    if (isHome) {
+      setHomeHovered(h => (h === 'domenica' ? null : 'domenica'))
+      return
+    }
+    navigate('/')
+  }
+
   const handleOverlayEnter = () => {
     clearTimeout(closeTimer.current)
     clearTimeout(unmountTimer.current)
@@ -85,13 +113,18 @@ export default function App() {
   return (
     <>
       <Cursor />
+      <DomenicaPanel
+        active={homeHovered === 'domenica'}
+        onEnter={handleDomEnter}
+        onLeave={handleDomLeave}
+        onLabelClick={handleDomClick}
+      />
       <Routes>
         <Route
           path="/"
           element={
             <Home
               hovered={homeHovered}
-              setHovered={setHomeHovered}
               onWorkAreaEnter={handleHomeWorkEnter}
               onWorkAreaLeave={handleHomeWorkLeave}
             />

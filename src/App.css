@@ -30,6 +30,27 @@
   height: 22px;
 }
 
+/* Full-screen blurred backdrop behind the DOMENICA panel — gives the bio
+   text contrast against whatever's underneath (gallery images, etc.) on
+   pages with no single element to dim the way Home dims its video.
+   z-index sits just below .dom-hover-zone's 20 so the actual content paints
+   on top of the blur, not behind it. */
+.dom-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 19;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.88);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.dom-backdrop.is-active {
+  opacity: 1;
+}
+
 /* One wrapping zone for the label + bio-text + social-nav. Idle, it's
    pointer-events:none and collapsed to the label's own height, so empty space
    passes clicks/hover through to the video underneath. Once active it grows
@@ -37,11 +58,16 @@
    no more bridging multiple disjoint elements with a timer, which can't
    reliably survive a slow/long mouse trip from the label across to the links. */
 .dom-hover-zone {
-  position: absolute;
-  /* absolute positioning resolves against the padding BOX (flush with .page's
-     own edge), not its content box — so this has to repeat .page's own
-     padding explicitly, or the zone (and the label inside it) renders flush
-     against the viewport instead of where the rest of the page's content sits. */
+  /* Fixed, not absolute — this is rendered once at the App root (see
+     DomenicaPanel/App.jsx), outside every page's own container, so it needs
+     to position against the viewport directly to land in the same spot
+     regardless of which page (Home, ProjectDetail, EditionDetail) is
+     mounted underneath it. Font-family is explicit for the same reason —
+     .nav-label/.bio-text/.social-nav never set their own and used to
+     inherit it from whichever page wrapper contained them; with no such
+     wrapper above this anymore, they'd otherwise fall back to the browser
+     default font instead of the site's. */
+  position: fixed;
   top: 36px;
   left: 40px;
   right: 40px;
@@ -50,6 +76,7 @@
   align-items: flex-start;
   pointer-events: none;
   z-index: 20;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .dom-hover-zone.is-active {
@@ -76,6 +103,12 @@
   top: 100%;
   left: 0;
   width: 100%;
+  /* Replaces two leading <br> — those inherited line-height from whatever
+     font-size surrounded them, so the equivalent pair in .social-nav (which
+     sits in a different font-size context) produced a slightly different
+     pixel height and the two columns didn't line up. An explicit px value
+     here and on .social-nav is identical regardless of font-size. */
+  padding-top: 32.4px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
@@ -89,24 +122,32 @@
 .bio-text.is-visible {
   opacity: 1;
   pointer-events: auto;
-  padding-left: 18.044vw;
-  /* Overrides the base rule's width:100% (which resolves against
-     .domenica-wrap's own 35%-wide box, the containing block for this
-     absolutely positioned element) — without this, adding padding-left just
-     squeezes the usable width further and the paragraph wraps narrower and
-     taller instead of spreading out horizontally. */
-  width: 50vw;
 }
 
-/* Social nav — sempre nel DOM, fade in/out. Same reasoning as .bio-text. */
+/* Wraps bio-text + social-nav so social-nav can anchor beside the text
+   (left:100% of this box) instead of at the zone's far right corner.
+   position:relative makes it the containing block for both. */
+.domenica-wrap .flex {
+  position: relative;
+}
+
+/* Social nav — sempre nel DOM, fade in/out. Same reasoning as .bio-text.
+   Anchored to the right of the bio-text column (left:100% of .flex) rather
+   than the zone's own right edge, so it sits beside the paragraph instead
+   of in the top-right corner. */
 .social-nav {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 100%;
+  margin-left: 50px;
+  /* Matches .bio-text's padding-top exactly — see comment there — so the
+     first link lines up with the bio paragraph's first line of text. */
+  padding-top: 32.4px;
+  white-space: nowrap;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
+  align-items: flex-start;
+  /* gap: 3px; */
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
@@ -262,8 +303,11 @@
     margin-top: 12px;
     /* The 1452px-viewport video-alignment reference (padding-left/width from
        the desktop rule) doesn't apply to the stacked mobile layout — same
-       reasoning as .dom-label above. */
+       reasoning as .dom-label above. The desktop padding-top (replacing the
+       old <br><br> spacer) isn't needed either, now that this sits in
+       normal flow right under DOMENICA instead of beside it. */
     padding-left: 0;
+    padding-top: 0;
     width: auto;
   }
 
@@ -271,6 +315,8 @@
     position: static;
     align-items: flex-start;
     margin-top: 16px;
+    margin-left: 0;
+    padding-top: 0;
     display: none;
   }
 
